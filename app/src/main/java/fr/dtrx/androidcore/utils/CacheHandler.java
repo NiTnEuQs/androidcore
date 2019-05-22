@@ -47,5 +47,14 @@ public class CacheHandler {
         }
         return null;
     }
+
+    public boolean contains(String key) {
+        return mSharedPreferences.contains(key);
+    }
+
+    public SharedPreferences getSharedPreferences() {
+        return mSharedPreferences;
+    }
+
 }
 
