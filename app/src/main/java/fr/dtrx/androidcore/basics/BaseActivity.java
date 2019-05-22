@@ -10,7 +10,10 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import fr.dtrx.androidcore.R;
+import fr.dtrx.androidcore.utils.KeyboardUtils;
+import fr.dtrx.androidcore.utils.NetworkUtils;
 
+@SuppressWarnings("unused")
 public abstract class BaseActivity extends AppCompatActivity {
 
     protected Bundle bundle;
@@ -135,7 +138,14 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
-    @SuppressWarnings("unused")
+    protected void hideKeyboard() {
+        KeyboardUtils.hideKeyboard(this);
+    }
+
+    protected boolean isConnected() {
+        return NetworkUtils.isConnected(this);
+    }
+
     protected boolean hasToolbar() {
         return toolbar != null;
     }

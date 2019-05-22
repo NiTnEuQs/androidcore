@@ -3,6 +3,7 @@ package fr.dtrx.androidcore.utils;
 import android.content.Context;
 import android.content.Intent;
 
+@SuppressWarnings("unused")
 public class ShareUtils {
 
     public static void share(Context context, String url) {

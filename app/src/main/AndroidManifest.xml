@@ -1,1 +1,6 @@
-<manifest package="fr.dtrx.androidcore" />
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="fr.dtrx.androidcore">
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+</manifest>

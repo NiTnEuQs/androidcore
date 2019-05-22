@@ -11,14 +11,17 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.Fragment;
+import fr.dtrx.androidcore.utils.KeyboardUtils;
+import fr.dtrx.androidcore.utils.NetworkUtils;
 
+@SuppressWarnings("unused")
 public abstract class BaseFragment extends Fragment {
 
-    Bundle bundle;
-    View view;
-    BaseActivity parentActivity;
-    ViewDataBinding binding;
-    ViewGroup viewGroup;
+    protected Bundle bundle;
+    protected View view;
+    protected BaseActivity parentActivity;
+    protected ViewDataBinding binding;
+    protected ViewGroup viewGroup;
 
     @Nullable
     @Override
@@ -60,6 +63,14 @@ public abstract class BaseFragment extends Fragment {
      * Listeners initialization
      */
     public void initializeListeners() {
+    }
+
+    protected void hideKeyboard() {
+        KeyboardUtils.hideKeyboard(getActivity());
+    }
+
+    protected boolean isConnected() {
+        return NetworkUtils.isConnected(getContext());
     }
 
     protected void back() {

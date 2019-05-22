@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
+@SuppressWarnings("unused")
 public class MapsUtils {
 
     /**
@@ -24,7 +25,6 @@ public class MapsUtils {
      * @param latLng  Lattitue and Longitude
      * @return Addresses list
      */
-    @SuppressWarnings("unused")
     public static List<Address> getAddressesFromLatLng(Context context, LatLng latLng) {
         Geocoder geocoder;
         List<Address> addresses;
@@ -46,7 +46,6 @@ public class MapsUtils {
      * @param latLng  Lattitue and Longitude
      * @return Addresses list
      */
-    @SuppressWarnings("unused")
     public static String getAddressFromLatLng(Context context, LatLng latLng) {
         Geocoder geocoder = new Geocoder(context, Locale.getDefault());
 
@@ -68,7 +67,6 @@ public class MapsUtils {
      * @param address Address
      * @return Lattitude and Longitude
      */
-    @SuppressWarnings("unused")
     public static LatLng getLatLngFromAddress(Context context, String address) {
         Geocoder geocoder = new Geocoder(context);
         List<Address> addresses;
@@ -86,6 +84,5 @@ public class MapsUtils {
 
         return null;
     }
-
 
 }

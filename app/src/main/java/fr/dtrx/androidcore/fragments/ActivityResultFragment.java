@@ -4,6 +4,7 @@ import android.content.Intent;
 
 import androidx.fragment.app.Fragment;
 
+@SuppressWarnings("unused")
 public class ActivityResultFragment extends Fragment {
 
     private OnActivityResultListener activityResultListener;

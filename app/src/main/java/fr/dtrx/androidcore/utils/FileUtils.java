@@ -24,7 +24,6 @@ import androidx.core.content.FileProvider;
 @SuppressWarnings("unused")
 public class FileUtils {
 
-    @SuppressWarnings("unused")
     public static File createImageFile(Context context) throws IOException {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.FRANCE).format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
@@ -44,7 +43,6 @@ public class FileUtils {
      * @param dest   Destination file
      * @return The destination file, null else
      */
-    @SuppressWarnings("unused")
     public static File copyFile(File source, File dest) {
         try (InputStream is = new FileInputStream(source); OutputStream os = new FileOutputStream(dest)) {
             byte[] buffer = new byte[1024];
@@ -71,7 +69,7 @@ public class FileUtils {
      * @param context Context
      * @param file    File to remove
      */
-    @SuppressWarnings({"unused", "ResultOfMethodCallIgnored"})
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     public static void deleteFile(final Context context, final File file) {
         if (file != null && file.exists()) {
             file.delete();
@@ -122,7 +120,6 @@ public class FileUtils {
      * @param sourceFile The file to read
      * @return An URI from the file, null else
      */
-    @SuppressWarnings("unused")
     public static Uri uriFromFile(Context context, File sourceFile) {
         return FileProvider.getUriForFile(
                 context,
@@ -138,7 +135,6 @@ public class FileUtils {
      * @param rawResourceId Resource id of the raw file
      * @return An object that represents the Json file content
      */
-    @SuppressWarnings("unused")
     public static <T> T jsonFromRaw(Context context, int rawResourceId, Class<T> clazz) {
         return new Gson().fromJson(stringFromInputStream(context.getResources().openRawResource(rawResourceId)), clazz);
     }
@@ -149,7 +145,7 @@ public class FileUtils {
      * @param inputStream The input stream to read
      * @return A string with the input stream content, null else
      */
-    @SuppressWarnings({"unused", "ResultOfMethodCallIgnored"})
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     public static String stringFromInputStream(InputStream inputStream) {
         try {
             byte[] bytes = new byte[inputStream.available()];
@@ -169,7 +165,6 @@ public class FileUtils {
      * @param file The file to read
      * @return A string with the file content, null else
      */
-    @SuppressWarnings("unused")
     public static String stringFromFile(File file) {
         try {
             StringBuilder text = new StringBuilder();

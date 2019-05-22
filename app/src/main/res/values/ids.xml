@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!--region Strings-->
+    <item name="app_name" type="string" />
+    <!--endregion-->
+
+    <!--region Colors-->
+    <item name="colorSecondary" type="color" />
+    <item name="colorBackground" type="color" />
+    <!--endregion-->
+
+    <!--region IDs-->
     <item name="toolbar" type="id" />
     <item name="bottombar" type="id" />
+    <!--endregion-->
 </resources>

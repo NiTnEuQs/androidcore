@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+@SuppressWarnings("unused")
 public class Permission {
 
     public static final int CAMERA_PERMISSION = 0;
