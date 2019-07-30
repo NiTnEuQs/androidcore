@@ -11,7 +11,7 @@ android {
         minSdkVersion 19
         targetSdkVersion 28
         versionCode 1
-        versionName "1.0.4.1-beta"
+        versionName "1.0.4.2-beta"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
@@ -38,6 +38,8 @@ dependencies {
     implementation 'com.google.android.gms:play-services-maps:16.1.0'
     /* For Gson conversion */
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
+    /* Pour compresser les images */
+    implementation 'id.zelory:compressor:2.1.0'
     /* Autres */
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'

@@ -10,11 +10,13 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.ListView;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -24,6 +26,7 @@ import java.util.List;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
 import fr.dtrx.androidcore.R;
+import id.zelory.compressor.Compressor;
 
 @SuppressWarnings({"unused", "WeakerAccess"})
 public class ImageUtils {
@@ -51,6 +54,28 @@ public class ImageUtils {
             fos.close();
             addImageToGallery(context, filePath);
             return file;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static String fileToBase64(File file) {
+        try {
+            byte[] b = new byte[(int) file.length()];
+            FileInputStream fileInputStream = new FileInputStream(file);
+            fileInputStream.read(b);
+
+            return Base64.encodeToString(b, Base64.DEFAULT);
+        } catch (IOException | NullPointerException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static File getCompressedFile(Context context, File file) {
+        try {
+            return new Compressor(context).compressToFile(file);
         } catch (IOException e) {
             e.printStackTrace();
             return null;

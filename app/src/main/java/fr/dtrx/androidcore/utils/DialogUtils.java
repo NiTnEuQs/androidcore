@@ -55,21 +55,35 @@ public class DialogUtils {
         }
     }
 
-    public static void onRequestFailed(Context context, String message, String positiveButtonText, String negativeButtonText, final OnDialogListener callback) {
-        AlertDialog.Builder isConnectedAlertBuilder = new AlertDialog.Builder(context);
-        isConnectedAlertBuilder.setMessage(message);
-        isConnectedAlertBuilder.setPositiveButton(positiveButtonText, (dialogInterface, i) -> callback.onPositiveResponse());
-        isConnectedAlertBuilder.setNegativeButton(negativeButtonText, (dialogInterface, i) -> callback.onNegativeResponse());
+    public static void choice(Context context, String message, String positiveButtonText, String negativeButtonText, final OnChoiceDialogListener callback) {
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(context);
+        alertBuilder.setMessage(message);
+        alertBuilder.setPositiveButton(positiveButtonText, (dialogInterface, i) -> callback.onPositiveResponse());
+        alertBuilder.setNegativeButton(negativeButtonText, (dialogInterface, i) -> callback.onNegativeResponse());
 
-        AlertDialog isConnectedAlertDialog = isConnectedAlertBuilder.create();
-        isConnectedAlertDialog.setCanceledOnTouchOutside(false);
-        isConnectedAlertDialog.show();
+        AlertDialog alertDialog = alertBuilder.create();
+        alertDialog.setCanceledOnTouchOutside(false);
+        alertDialog.show();
     }
 
-    public interface OnDialogListener {
+    public static void information(Context context, String message, String buttonText, final OnInformationDialogListener callback) {
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(context);
+        alertBuilder.setMessage(message);
+        alertBuilder.setPositiveButton(buttonText, (dialogInterface, i) -> callback.onResponse());
+
+        AlertDialog alertDialog = alertBuilder.create();
+        alertDialog.setCanceledOnTouchOutside(false);
+        alertDialog.show();
+    }
+
+    public interface OnChoiceDialogListener {
         void onPositiveResponse();
 
         void onNegativeResponse();
+    }
+
+    public interface OnInformationDialogListener {
+        void onResponse();
     }
 
 }
