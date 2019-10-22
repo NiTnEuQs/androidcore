@@ -26,7 +26,6 @@ import java.util.List;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
 import fr.dtrx.androidcore.R;
-import id.zelory.compressor.Compressor;
 
 @SuppressWarnings({"unused", "WeakerAccess"})
 public class ImageUtils {
@@ -68,15 +67,6 @@ public class ImageUtils {
 
             return Base64.encodeToString(b, Base64.DEFAULT);
         } catch (IOException | NullPointerException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    public static File getCompressedFile(Context context, File file) {
-        try {
-            return new Compressor(context).compressToFile(file);
-        } catch (IOException e) {
             e.printStackTrace();
             return null;
         }
