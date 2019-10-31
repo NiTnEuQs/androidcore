@@ -8,17 +8,23 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.ListView;
 
+import com.google.android.gms.common.util.IOUtils;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -226,6 +232,60 @@ public class ImageUtils {
         }
 
         return bmMerged;
+    }
+
+    public static String getFilePathFromURI(Context context, Uri contentUri) {
+        //copy file and send new file path
+        String fileName = getFileName(contentUri);
+        if (!TextUtils.isEmpty(fileName)) {
+            File copyFile = new File(context.getExternalFilesDir(null) + File.separator + fileName);
+            copy(context, contentUri, copyFile);
+            return copyFile.getAbsolutePath();
+        }
+        return null;
+    }
+
+    public static String getFileName(Uri uri) {
+        if (uri == null) return null;
+        String fileName = null;
+        String path = uri.getPath();
+        int cut = path.lastIndexOf('/');
+        if (cut != -1) {
+            fileName = path.substring(cut + 1);
+        }
+        return fileName;
+    }
+
+    public static void copy(Context context, Uri srcUri, File dstFile) {
+        try {
+            InputStream inputStream = context.getContentResolver().openInputStream(srcUri);
+            if (inputStream == null) return;
+            OutputStream outputStream = new FileOutputStream(dstFile);
+            byte[] bytes = new byte[inputStream.read()];
+            IOUtils.copyStream(inputStream, outputStream);
+//            copyStream(inputStream, outputStream);
+            inputStream.close();
+            outputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static long copyStream(InputStream var0, OutputStream var1) throws IOException {
+        int var3 = 1024;
+        byte[] var4 = new byte[var3];
+        long var5 = 0L;
+
+        int var7;
+        try {
+            while ((var7 = var0.read(var4, 0, var3)) != -1) {
+                var5 += (long) var7;
+                var1.write(var4, 0, var7);
+            }
+        } finally {
+        }
+
+        return var5;
     }
 
 }
