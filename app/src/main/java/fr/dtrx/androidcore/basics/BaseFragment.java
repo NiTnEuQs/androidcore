@@ -26,11 +26,10 @@ public abstract class BaseFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        initializeData();
-
         bundle = getArguments();
         viewGroup = container;
 
+        initializeData();
         initializeView(savedInstanceState);
         initializeListeners();
 
