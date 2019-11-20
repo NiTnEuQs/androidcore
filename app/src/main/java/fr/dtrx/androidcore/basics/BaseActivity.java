@@ -1,5 +1,9 @@
 package fr.dtrx.androidcore.basics;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
@@ -21,6 +25,8 @@ public abstract class BaseActivity<T extends ViewDataBinding> extends AppCompatA
     protected Bundle bundle;
     protected Toolbar toolbar;
 
+    private NotificationReceiver notificationReceiver = new NotificationReceiver();
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +37,14 @@ public abstract class BaseActivity<T extends ViewDataBinding> extends AppCompatA
         initializeView();
         initializeToolbar();
         initializeListeners();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (notificationReceiver != null) {
+            unregisterReceiver(notificationReceiver);
+        }
     }
 
     @Override
@@ -98,12 +112,24 @@ public abstract class BaseActivity<T extends ViewDataBinding> extends AppCompatA
 
         binding = DataBindingUtil.setContentView(this, layoutResId());
         toolbar = findViewById(R.id.toolbar);
+
+        if (notificationReceiver != null) {
+            IntentFilter filter = new IntentFilter(NotificationReceiver.TAG);
+            registerReceiver(notificationReceiver, filter);
+        }
     }
 
     /**
      * Listeners initialization
      */
     public void initializeListeners() {
+        if (notificationReceiver != null) {
+            notificationReceiver.setNotificationListener(getNotificationListener());
+        }
+    }
+
+    public NotificationReceiver.NotificationListener getNotificationListener() {
+        return null;
     }
 
     private void enableBackButton() {
@@ -149,6 +175,29 @@ public abstract class BaseActivity<T extends ViewDataBinding> extends AppCompatA
         BACK,
         CLOSE,
         MENU
+    }
+
+    public static class NotificationReceiver extends BroadcastReceiver {
+        public static String TAG = "notification_receiver";
+        public static String EXTRA_TITLE = "title";
+        public static String EXTRA_DESCRIPTION = "description";
+
+        public NotificationListener notificationListener;
+
+        public void setNotificationListener(NotificationListener notificationListener) {
+            this.notificationListener = notificationListener;
+        }
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (notificationListener != null) {
+                notificationListener.onNotificationReceive(context, intent);
+            }
+        }
+
+        public interface NotificationListener {
+            void onNotificationReceive(Context context, Intent intent);
+        }
     }
 
 }
