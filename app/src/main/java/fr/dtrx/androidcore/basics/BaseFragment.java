@@ -1,6 +1,5 @@
 package fr.dtrx.androidcore.basics;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,13 +13,14 @@ import androidx.fragment.app.Fragment;
 import fr.dtrx.androidcore.utils.KeyboardUtils;
 import fr.dtrx.androidcore.utils.NetworkUtils;
 
-@SuppressWarnings("unused")
-public abstract class BaseFragment extends Fragment {
+@SuppressWarnings({"unused", "WeakerAccess", "unchecked"})
+public abstract class BaseFragment<T extends BaseActivity, Y extends ViewDataBinding> extends Fragment {
+
+    protected T parentActivity;
+    protected Y binding;
 
     protected Bundle bundle;
     protected View view;
-    protected BaseActivity parentActivity;
-    protected ViewDataBinding binding;
     protected ViewGroup viewGroup;
 
     @Nullable
@@ -51,9 +51,9 @@ public abstract class BaseFragment extends Fragment {
         binding = DataBindingUtil.inflate(getLayoutInflater(), layoutResId(), viewGroup, false);
 
         view = binding.getRoot();
+        parentActivity = (T) getActivity();
 
-        if (getActivity() instanceof BaseActivity) {
-            parentActivity = (BaseActivity) getActivity();
+        if (parentActivity != null) {
             parentActivity.initializeToolbar();
         }
     }
@@ -76,16 +76,6 @@ public abstract class BaseFragment extends Fragment {
         if (getFragmentManager() != null) {
             getFragmentManager().popBackStack();
         }
-    }
-
-    @SuppressWarnings("unchecked")
-    protected <T extends ViewDataBinding> T getBinding() {
-        return (T) binding;
-    }
-
-    @SuppressWarnings("unchecked")
-    protected <T extends Activity> T getParentActivity() {
-        return (T) parentActivity;
     }
 
 }

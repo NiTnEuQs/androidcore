@@ -14,13 +14,12 @@ import fr.dtrx.androidcore.utils.KeyboardUtils;
 import fr.dtrx.androidcore.utils.NetworkUtils;
 
 @SuppressWarnings("unused")
-public abstract class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity<T extends ViewDataBinding> extends AppCompatActivity {
+
+    protected T binding;
 
     protected Bundle bundle;
-
     protected Toolbar toolbar;
-
-    private ViewDataBinding binding;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -32,11 +31,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         initializeView();
         initializeToolbar();
         initializeListeners();
-    }
-
-    @SuppressWarnings("unchecked")
-    protected <T extends ViewDataBinding> T getBinding() {
-        return (T) binding;
     }
 
     @Override
