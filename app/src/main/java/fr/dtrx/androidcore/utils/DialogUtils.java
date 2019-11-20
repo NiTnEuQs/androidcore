@@ -57,11 +57,11 @@ public class DialogUtils {
     }
 
     public static void loading(Context context, String text) {
-        instance.showProgressDialog(context, TextUtils.isEmpty(text) ? TEXT_LOADING : text, false);
+        getInstance().showProgressDialog(context, TextUtils.isEmpty(text) ? TEXT_LOADING : text, false);
     }
 
     public static void dismissLoading() {
-        instance.dismiss();
+        getInstance().dismiss();
     }
 
     public static void choice(Context context, String message, String positiveButtonText, String negativeButtonText, final OnChoiceDialogListener callback) {
