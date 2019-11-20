@@ -1,8 +1,11 @@
 package fr.dtrx.androidcore.utils;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Environment;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -213,6 +216,56 @@ public class FileUtils {
 
             return null;
         }
+    }
+
+    /**
+     * Save the image to an external directory
+     *
+     * @param context App context
+     * @param image   Bitmap image
+     * @return The path of the image
+     */
+    public static String saveImage(Context context, Bitmap image) {
+        String appName = context.getPackageName();
+        String filename = "IMG_" + new Date().getTime() + ".png";
+
+        String savedImagePath = null;
+
+        File storageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + File.separator + appName);
+        boolean success = true;
+        if (!storageDir.exists()) {
+            success = storageDir.mkdirs();
+        }
+        if (success) {
+            File imageFile = new File(storageDir, filename);
+            savedImagePath = imageFile.getAbsolutePath();
+            try {
+                OutputStream fOut = new FileOutputStream(imageFile);
+                image.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
+                fOut.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            // Add the image to the system gallery
+            addImageToGallery(context, savedImagePath);
+            Toast.makeText(context, "Image ajouté à la galerie", Toast.LENGTH_SHORT).show();
+        }
+        return savedImagePath;
+    }
+
+    /**
+     * Add the image to the gallery
+     *
+     * @param context   App context
+     * @param imagePath Image path
+     */
+    public static void addImageToGallery(Context context, String imagePath) {
+        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        File f = new File(imagePath);
+        Uri contentUri = Uri.fromFile(f);
+        mediaScanIntent.setData(contentUri);
+        context.sendBroadcast(mediaScanIntent);
     }
 
 }
