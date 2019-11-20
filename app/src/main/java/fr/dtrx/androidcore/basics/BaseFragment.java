@@ -28,6 +28,7 @@ public abstract class BaseFragment<T extends BaseActivity, Y extends ViewDataBin
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         bundle = getArguments();
         viewGroup = container;
+        parentActivity = (T) getActivity();
 
         initializeData();
         initializeView(savedInstanceState);
@@ -51,7 +52,6 @@ public abstract class BaseFragment<T extends BaseActivity, Y extends ViewDataBin
         binding = DataBindingUtil.inflate(getLayoutInflater(), layoutResId(), viewGroup, false);
 
         view = binding.getRoot();
-        parentActivity = (T) getActivity();
 
         if (parentActivity != null) {
             parentActivity.initializeToolbar();
