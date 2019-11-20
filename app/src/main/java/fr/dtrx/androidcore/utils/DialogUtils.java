@@ -3,10 +3,11 @@ package fr.dtrx.androidcore.utils;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.text.TextUtils;
 
 import androidx.appcompat.app.AlertDialog;
 
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "WeakerAccess"})
 public class DialogUtils {
 
     private final static String TEXT_LOADING = "Chargement";
@@ -53,6 +54,14 @@ public class DialogUtils {
             isShowing = false;
             dialog = null;
         }
+    }
+
+    public static void loading(Context context, String text) {
+        instance.showProgressDialog(context, TextUtils.isEmpty(text) ? TEXT_LOADING : text, false);
+    }
+
+    public static void dismissLoading() {
+        instance.dismiss();
     }
 
     public static void choice(Context context, String message, String positiveButtonText, String negativeButtonText, final OnChoiceDialogListener callback) {

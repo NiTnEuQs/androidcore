@@ -6,22 +6,28 @@ import android.os.Environment;
 
 import com.google.gson.Gson;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.Reader;
+import java.net.URL;
+import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
 import androidx.core.content.FileProvider;
 
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "WeakerAccess"})
 public class FileUtils {
 
     public static File createImageFile(Context context) throws IOException {
@@ -50,10 +56,6 @@ public class FileUtils {
             while ((length = is.read(buffer)) > 0) {
                 os.write(buffer, 0, length);
             }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-
-            return null;
         } catch (IOException e) {
             e.printStackTrace();
 
@@ -126,6 +128,33 @@ public class FileUtils {
                 context.getPackageName() + ".provider",
                 sourceFile
         );
+    }
+
+    /**
+     * Fonction pour récupérer du JSON à partir d'une URL
+     *
+     * @param url URL renvoyant du JSON
+     * @return Un JSONObject représentant les données récupérées
+     */
+    public static JSONObject readJsonFromUrl(String url) {
+        try (InputStream is = new URL(url).openStream()) {
+            BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
+            String jsonText = readAll(rd);
+            return new JSONObject(jsonText);
+        } catch (JSONException | IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    private static String readAll(Reader rd) throws IOException {
+        StringBuilder sb = new StringBuilder();
+        int cp;
+        while ((cp = rd.read()) != -1) {
+            sb.append((char) cp);
+        }
+        return sb.toString();
     }
 
     /**
