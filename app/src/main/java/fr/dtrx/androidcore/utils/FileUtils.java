@@ -271,16 +271,18 @@ public class FileUtils {
         context.sendBroadcast(mediaScanIntent);
     }
 
-    public static String fileToBase64(File file) throws IOException {
+    public static byte[] fileToBytes(File file) throws IOException {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         ObjectOutputStream oos = new ObjectOutputStream(bos);
         oos.writeObject(file);
         bos.close();
         oos.close();
 
-        byte[] bytes = bos.toByteArray();
+        return bos.toByteArray();
+    }
 
-        return Base64.encodeToString(bytes, Base64.DEFAULT);
+    public static String fileToBase64(File file) throws IOException {
+        return Base64.encodeToString(fileToBytes(file), Base64.DEFAULT);
     }
 
 }
