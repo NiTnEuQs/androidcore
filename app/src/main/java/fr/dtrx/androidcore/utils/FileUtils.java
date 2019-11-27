@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Environment;
 import android.util.Base64;
+import android.util.Base64OutputStream;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -293,8 +294,32 @@ public class FileUtils {
         return bos.toByteArray();
     }
 
-    public static String fileToBase64(File file) throws IOException {
-        return Base64.encodeToString(fileToBytes(file), Base64.DEFAULT);
+    public static String fileToBase64(File file) {
+        try {
+            InputStream inputStream = new FileInputStream(file.getAbsolutePath());
+
+            byte[] buffer = new byte[8192];
+            int bytesRead;
+
+            ByteArrayOutputStream output = new ByteArrayOutputStream();
+            Base64OutputStream output64 = new Base64OutputStream(output, Base64.DEFAULT);
+
+            try {
+                while ((bytesRead = inputStream.read(buffer)) != -1) {
+                    output64.write(buffer, 0, bytesRead);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            output64.close();
+
+            return output.toString();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
 }
