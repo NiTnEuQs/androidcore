@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
 import android.util.Base64;
 import android.util.Base64OutputStream;
@@ -237,7 +238,15 @@ public class FileUtils {
 
         String savedImagePath = null;
 
-        File storageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + File.separator + appName);
+        File storageDir;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            storageDir = new File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES) + File.separator + appName);
+        }
+        else {
+            storageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + File.separator + appName);
+        }
+
         boolean success = true;
         if (!storageDir.exists()) {
             success = storageDir.mkdirs();
