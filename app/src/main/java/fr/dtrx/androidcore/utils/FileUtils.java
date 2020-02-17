@@ -1,11 +1,13 @@
 package fr.dtrx.androidcore.utils;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Base64OutputStream;
 import android.widget.Toast;
@@ -232,20 +234,13 @@ public class FileUtils {
      * @param image   Bitmap image
      * @return The path of the image
      */
-    public static String saveImage(Context context, Bitmap image) {
+    public static String saveImage(Context context, Bitmap image, String mimeType) {
         String appName = context.getPackageName();
         String filename = "IMG_" + new Date().getTime() + ".png";
 
         String savedImagePath = null;
 
-        File storageDir;
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            storageDir = new File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES) + File.separator + appName);
-        }
-        else {
-            storageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + File.separator + appName);
-        }
+        File storageDir = new File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES) + File.separator + appName);
 
         boolean success = true;
         if (!storageDir.exists()) {
@@ -263,7 +258,7 @@ public class FileUtils {
             }
 
             // Add the image to the system gallery
-            addImageToGallery(context, savedImagePath);
+            addImageToGallery(context, savedImagePath, mimeType);
             Toast.makeText(context, "Image ajouté à la galerie", Toast.LENGTH_SHORT).show();
         }
         return savedImagePath;
@@ -275,12 +270,21 @@ public class FileUtils {
      * @param context   App context
      * @param imagePath Image path
      */
-    public static void addImageToGallery(Context context, String imagePath) {
-        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-        File f = new File(imagePath);
-        Uri contentUri = Uri.fromFile(f);
-        mediaScanIntent.setData(contentUri);
-        context.sendBroadcast(mediaScanIntent);
+    public static void addImageToGallery(Context context, String imagePath, String mimeType) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            ContentValues values = new ContentValues();
+            values.put(MediaStore.Images.Media.MIME_TYPE, mimeType);
+            values.put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis());
+            values.put(MediaStore.Images.Media.DATA, imagePath);
+            context.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+        }
+        else {
+            Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+            File f = new File(imagePath);
+            Uri contentUri = Uri.fromFile(f);
+            mediaScanIntent.setData(contentUri);
+            context.sendBroadcast(mediaScanIntent);
+        }
     }
 
     public static File bytesToFile(byte[] bytes) throws IOException, ClassNotFoundException {
