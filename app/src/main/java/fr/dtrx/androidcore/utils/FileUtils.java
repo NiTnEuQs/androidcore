@@ -3,6 +3,7 @@ package fr.dtrx.androidcore.utils;
 import android.content.ContentValues;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -256,7 +257,7 @@ public class FileUtils {
             }
 
             // Add the image to the system gallery
-            addImageToGallery(context, savedImagePath, mimeType);
+            addImageToGallery(context, savedImagePath, mimeType, true);
             Toast.makeText(context, "Image ajouté à la galerie", Toast.LENGTH_SHORT).show();
         }
         return savedImagePath;
@@ -268,12 +269,26 @@ public class FileUtils {
      * @param context   App context
      * @param imagePath Image path
      */
-    public static void addImageToGallery(Context context, String imagePath, String mimeType) {
+    public static void addImageToGallery(Context context, String imagePath, String mimeType, boolean refreshGallery) {
         ContentValues values = new ContentValues();
         values.put(MediaStore.Images.Media.MIME_TYPE, mimeType);
         values.put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis());
         values.put(MediaStore.Images.Media.DATA, imagePath);
         context.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+
+        if (refreshGallery) {
+            refreshGallery(context, imagePath);
+        }
+    }
+
+    public static void refreshGallery(Context context, String imagePath) {
+        //Scan file so that it will instantly appear in Gallery
+        MediaScannerConnection.scanFile(context, new String[]{imagePath}, null,
+                (path, uri) -> {
+                    Log.i("ExternalStorage", "Scanned " + path + ":");
+                    Log.i("ExternalStorage", "-> uri=" + uri);
+                }
+        );
     }
 
     public static File bytesToFile(byte[] bytes) throws IOException, ClassNotFoundException {
