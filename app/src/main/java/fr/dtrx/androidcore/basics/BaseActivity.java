@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,6 +25,7 @@ public abstract class BaseActivity<T extends ViewDataBinding> extends AppCompatA
 
     protected Bundle bundle;
     protected Toolbar toolbar;
+    protected TextView toolbarTitle;
 
     private NotificationReceiver notificationReceiver = new NotificationReceiver();
 
@@ -112,6 +114,7 @@ public abstract class BaseActivity<T extends ViewDataBinding> extends AppCompatA
 
         binding = DataBindingUtil.setContentView(this, layoutResId());
         toolbar = findViewById(R.id.toolbar);
+        toolbarTitle = findViewById(R.id.toolbar_title);
 
         if (notificationReceiver != null) {
             IntentFilter filter = new IntentFilter(NotificationReceiver.TAG);
@@ -126,6 +129,12 @@ public abstract class BaseActivity<T extends ViewDataBinding> extends AppCompatA
         if (notificationReceiver != null) {
             notificationReceiver.setNotificationListener(getNotificationListener());
         }
+    }
+
+    /**
+     * Post listeners initialization
+     */
+    public void postListenersInitialized() {
     }
 
     public NotificationReceiver.NotificationListener getNotificationListener() {
@@ -155,6 +164,26 @@ public abstract class BaseActivity<T extends ViewDataBinding> extends AppCompatA
     private void disableButtons() {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        }
+    }
+
+    @Override
+    public void setTitle(int titleId) {
+        if (toolbarTitle != null) {
+            toolbarTitle.setText(titleId);
+        }
+        else {
+            super.setTitle(titleId);
+        }
+    }
+
+    @Override
+    public void setTitle(CharSequence title) {
+        if (toolbarTitle != null) {
+            toolbarTitle.setText(title);
+        }
+        else {
+            super.setTitle(title);
         }
     }
 
