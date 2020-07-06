@@ -129,6 +129,8 @@ public abstract class BaseActivity<T extends ViewDataBinding> extends AppCompatA
         if (notificationReceiver != null) {
             notificationReceiver.setNotificationListener(getNotificationListener());
         }
+
+        postListenersInitialized();
     }
 
     /**
