@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
@@ -26,6 +28,7 @@ public abstract class BaseActivity<T extends ViewDataBinding> extends AppCompatA
     protected Bundle bundle;
     protected Toolbar toolbar;
     protected TextView toolbarTitle;
+    protected TextView toolbarSubtitle;
 
     private NotificationReceiver notificationReceiver = new NotificationReceiver();
 
@@ -115,6 +118,7 @@ public abstract class BaseActivity<T extends ViewDataBinding> extends AppCompatA
         binding = DataBindingUtil.setContentView(this, layoutResId());
         toolbar = findViewById(R.id.toolbar);
         toolbarTitle = findViewById(R.id.toolbar_title);
+        toolbarSubtitle = findViewById(R.id.toolbar_subtitle);
 
         if (notificationReceiver != null) {
             IntentFilter filter = new IntentFilter(NotificationReceiver.TAG);
@@ -186,6 +190,30 @@ public abstract class BaseActivity<T extends ViewDataBinding> extends AppCompatA
         }
         else {
             super.setTitle(title);
+        }
+    }
+
+    public void setSubtitle(int titleId) {
+        if (toolbarSubtitle != null) {
+            if (titleId < 0) {
+                toolbarSubtitle.setVisibility(View.GONE);
+            }
+            else {
+                toolbarSubtitle.setVisibility(View.VISIBLE);
+                toolbarSubtitle.setText(titleId);
+            }
+        }
+    }
+
+    public void setSubtitle(CharSequence title) {
+        if (toolbarSubtitle != null) {
+            if (TextUtils.isEmpty(title)) {
+                toolbarSubtitle.setVisibility(View.GONE);
+            }
+            else {
+                toolbarSubtitle.setVisibility(View.VISIBLE);
+                toolbarSubtitle.setText(title);
+            }
         }
     }
 

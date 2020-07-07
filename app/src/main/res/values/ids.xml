@@ -12,6 +12,7 @@
     <!--region IDs-->
     <item name="toolbar" type="id" />
     <item name="toolbar_title" type="id" />
+    <item name="toolbar_subtitle" type="id" />
     <item name="bottombar" type="id" />
     <!--endregion-->
 </resources>
