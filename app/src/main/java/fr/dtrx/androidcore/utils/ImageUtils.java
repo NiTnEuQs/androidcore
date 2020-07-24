@@ -53,16 +53,19 @@ public class ImageUtils {
         new File(imageParent).mkdirs();
 
         try {
-            FileOutputStream fos = new FileOutputStream(file);
-            bitmap.compress(Bitmap.CompressFormat.PNG, 90, fos);
-            fos.flush();
-            fos.close();
-            addImageToGallery(context, filePath);
-            return file;
+            if (new File(filePath).createNewFile()) {
+                FileOutputStream fos = new FileOutputStream(file);
+                bitmap.compress(Bitmap.CompressFormat.PNG, 90, fos);
+                fos.flush();
+                fos.close();
+                addImageToGallery(context, filePath);
+                return file;
+            }
         } catch (IOException e) {
             e.printStackTrace();
-            return null;
         }
+
+        return null;
     }
 
     public static String fileToBase64(File file) {
