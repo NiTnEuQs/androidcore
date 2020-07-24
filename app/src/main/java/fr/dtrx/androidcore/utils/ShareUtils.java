@@ -33,11 +33,19 @@ public class ShareUtils {
         }
     }
 
-    public static void shareViews(Context context, View... views) {
-        Bitmap b = ImageUtils.getBitmapFromViews(context, views);
+    public static void shareView(Context context, View view) {
+        Bitmap bitmap = ImageUtils.getBitmapFromView(context, view);
+        shareBitmap(context, bitmap);
+    }
 
-        if (b != null) {
-            File file = ImageUtils.savePicture(context, b);
+    public static void shareViews(Context context, View... views) {
+        Bitmap bitmap = ImageUtils.getBitmapFromViews(context, views);
+        shareBitmap(context, bitmap);
+    }
+
+    public static void shareBitmap(Context context, Bitmap bitmap) {
+        if (bitmap != null) {
+            File file = ImageUtils.savePicture(context, bitmap);
             if (file != null) {
                 DialogUtils.getInstance().dismiss();
                 shareFile(context, file);
